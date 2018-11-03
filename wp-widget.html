@@ -63,7 +63,9 @@ function fetchAndDisplayData() {
       // Row 5: Subhed
       var row5 = data[startIndex + 4].split(",");
 
-      $container.append(`
+      // Put it all together!
+      var raceHtml = ``;
+      raceHtml += `
         <li class="carousel-widget-slide" style="width: 247.5px; margin-right: 20px; float: left; display: block;">
           <div id="carouseltextcarousel-2" class="carouseltext" style="max-height:50px;min-height:20px; padding-top:10px;">
             <div class="widgetheadline" style="text-align:center;">
@@ -75,20 +77,25 @@ function fetchAndDisplayData() {
             </div>
           </div>
           <div style="height:170px;width:100%;overflow:hidden;position:relative;">
-            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px;">
+          <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row2[2]}; color: ${row2[3]}">
               ${row2[0]}: ${row2[1]}
             </span>
-            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px;">
+            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row3[2]}; color: ${row3[3]}">
               ${row3[0]}: ${row3[1]}
             </span>
-            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px;">
-              ${row4Text}
-            </span>
-            <!--<p style="font-size:14px; line-height:17px;" class="homeheadline">${row5[1]}</p>-->
-            <!--<img src="https://pittnews.com/wp-content/uploads/2018/10/FEATURE_SC-475x356.jpg" id="imgcarousel-2130325" style="width:100%;height:auto;" alt="Election Results">-->
-          </div>
-        </li>`
-      );
+      `;
+
+      if (row4[0] !== '_blank') {
+        raceHtml += `
+          <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row4[2]}; color: ${row4[3]}">
+            ${row4Text}
+          </span>
+          `;
+      }
+
+      raceHtml += `</div></li>`;
+
+      $container.append(raceHtml);
     }
   });
 };
