@@ -1,0 +1,130 @@
+<div class="widgetwrap carousel-widget sno-animate  sno-carousel-2 come-in" style="visibility: visible;">
+  <div style="margin: 0px 0px 0px 0px;padding: 10px 9px 0px 9px;overflow: hidden;background-color: #ededed;border-left: 0px solid #ffffff;border-right: 0px solid #ffffff;border-top: 0px solid #ffffff;">
+    <div class="widget4 widgettitle" style="color: #6d6d6d!important;background: #ededed!important;font-size:16px!important;line-height: 28px!important;padding-top:2px !important;text-align:center;">
+      <p style="color: #6d6d6d !important;">Live Election Updates <span id="live-election-updated-at"></span></p>
+    </div>
+  </div>
+  <div class="widgetbody4" style="background-color: #ededed!important;border-right: 0px solid #ffffff !important;border-left: 0px solid #ffffff !important;border-bottom: 0px solid #ffffff !important; padding-top: 0px;">
+    <div id="carousel-2" class="flex-container" style="position: relative; background: unset;">
+      <div id="carouselcarousel-2" class="flexslider" style="margin-bottom: 0px; border: 0px; opacity: 1;">
+        <div class="flex-viewport" style="overflow: hidden; position: relative;">
+          <ul id="live-election-slides" class="slides" style="width: 800%; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
+          </ul>
+        </div>
+
+        <ul class="flex-direction-nav">
+          <li class="flex-nav-prev">
+            <a class="flex-prev flex-disabled" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="flex-nav-next">
+            <a class="flex-next flex-disabled" href="#" tabindex="-1">Next</a>
+          </li>
+        </ul>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <script type="text/javascript">
+function fetchAndDisplayData() {
+  var $container = $('ul#live-election-slides');
+
+  var dataUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOSBIcrqmJ5OLuTJksiTt8Y1PXbaxx_SU0nKZcZXyCEDmgdxsF5XEcv6JPxzgpVjiLDlYci2tUtHGD/pub?output=csv';
+  $.get(dataUrl, (res, status, _) => {
+    if (status !== 'success')
+      return;
+
+    $container.html('');
+
+    var data = res.split("\r\n");
+
+    var updatedAt = data.shift().split(",");
+    $('span#live-election-updated-at').html(updatedAt[1]);
+
+    var rowHeaderIndices = data.filter((d) => { return d.startsWith('H'); }).map((d) => { return data.indexOf(d); });
+    for(var i = 1; i < rowHeaderIndices.length; i += 1) {
+      var startIndex = rowHeaderIndices[i - 1];
+      var endIndex = rowHeaderIndices[i];
+
+      // Row 1: Header
+      var header = data[startIndex].split(",")[1];
+
+      // Row 2: Candidate 1
+      var row2 = data[startIndex + 1].split(",");
+
+      // Row 3: Candidate 2
+      var row3 = data[startIndex + 2].split(",");
+
+      // Row 4: Candidate 3 **OR** Blank
+      var row4 = data[startIndex + 3].split(",");
+      var row4Text = '';
+      if (row4[0] !== '_blank') {
+        row4Text = `${row4[0]}: ${row4[1]}`;
+      }
+
+      // Row 5: Subhed
+      var row5 = data[startIndex + 4].split(",");
+
+      $container.append(`
+        <li class="carousel-widget-slide" style="width: 247.5px; margin-right: 20px; float: left; display: block;">
+          <div id="carouseltextcarousel-2" class="carouseltext" style="max-height:50px;min-height:20px; padding-top:10px;">
+            <div class="widgetheadline" style="text-align:center;">
+              <p style="font-size:14px; line-height:17px;" class="homeheadline">
+              <b>${header}</b>
+              <br />
+              <b>(${row5[1]})</b>
+              </p>
+            </div>
+          </div>
+          <div style="height:170px;width:100%;overflow:hidden;position:relative;">
+            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px;">
+              ${row2[0]}: ${row2[1]}
+            </span>
+            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px;">
+              ${row3[0]}: ${row3[1]}
+            </span>
+            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px;">
+              ${row4Text}
+            </span>
+            <!--<p style="font-size:14px; line-height:17px;" class="homeheadline">${row5[1]}</p>-->
+            <!--<img src="https://pittnews.com/wp-content/uploads/2018/10/FEATURE_SC-475x356.jpg" id="imgcarousel-2130325" style="width:100%;height:auto;" alt="Election Results">-->
+          </div>
+        </li>`
+      );
+    }
+  });
+};
+
+function initCarousel() {
+  $(window).load(function() {
+    var carouselWindowWidth = ($(window).width() - 60) / 4;
+    $('#carouselcarousel-2').flexslider({
+      animationSpeed: 1000,
+      animationLoop: true,
+      controlNav: false,
+			smoothHeight: false,
+			slideshowSpeed: 10000,
+			slideshow: false,
+			animation: 'slide',
+      itemWidth: 247.5,
+			itemMargin: 20,
+			minItems: 1,
+			move: 4,
+			maxItems: 5,
+		});
+  });
+
+	$(window).load(function() {
+	  $('.flexslider').animate({ 'opacity': 1 }, { 'duration': 'slow' });
+	});
+};
+
+function initLiveElectionApp() {
+  fetchAndDisplayData();
+  initCarousel();
+};
+
+$(document).on('ready', initLiveElectionApp);
+		</script>
+    <div class="widget-expander" style="padding-bottom:0px"></div>
+    <div class="clear"></div>
+  </div>
+</div>
