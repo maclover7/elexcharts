@@ -40,9 +40,8 @@ function fetchAndDisplayData() {
     $('span#live-election-updated-at').html(updatedAt[1]);
 
     var rowHeaderIndices = data.filter((d) => { return d.startsWith('H'); }).map((d) => { return data.indexOf(d); });
-    for(var i = 1; i < rowHeaderIndices.length; i += 1) {
-      var startIndex = rowHeaderIndices[i - 1];
-      var endIndex = rowHeaderIndices[i];
+    for(var i = 0; i < rowHeaderIndices.length; i++) {
+      var startIndex = rowHeaderIndices[i];
 
       // Row 1: Header
       var header = data[startIndex].split(",")[1];
@@ -66,7 +65,7 @@ function fetchAndDisplayData() {
       // Put it all together!
       var raceHtml = ``;
       raceHtml += `
-        <li class="carousel-widget-slide" style="width: 247.5px; margin-right: 20px; float: left; display: block;">
+        <li class="carousel-widget-slide" style="width: 195px; margin-right: 20px; float: left; display: block;">
           <div id="carouseltextcarousel-2" class="carouseltext" style="max-height:50px;min-height:20px; padding-top:10px;">
             <div class="widgetheadline" style="text-align:center;">
               <p style="font-size:14px; line-height:17px;" class="homeheadline">
@@ -101,32 +100,30 @@ function fetchAndDisplayData() {
 };
 
 function initCarousel() {
-  $(window).load(function() {
-    var carouselWindowWidth = ($(window).width() - 60) / 4;
-    $('#carouselcarousel-2').flexslider({
-      animationSpeed: 1000,
-      animationLoop: true,
-      controlNav: false,
-			smoothHeight: false,
-			slideshowSpeed: 10000,
-			slideshow: false,
-			animation: 'slide',
-      itemWidth: 247.5,
-			itemMargin: 20,
-			minItems: 1,
-			move: 4,
-			maxItems: 5,
-		});
+  $('#carouselcarousel-2').flexslider({
+    animationSpeed: 1000,
+    animationLoop: true,
+    controlNav: false,
+    smoothHeight: false,
+    slideshowSpeed: 10000,
+    slideshow: false,
+    animation: 'slide',
+    itemWidth: 195,
+    itemMargin: 20,
+    minItems: 1,
+    move: 4,
+    maxItems: 5,
   });
 
-	$(window).load(function() {
-	  $('.flexslider').animate({ 'opacity': 1 }, { 'duration': 'slow' });
-	});
+  $('.flexslider').animate({ 'opacity': 1 }, { 'duration': 'slow' });
 };
 
 function initLiveElectionApp() {
   fetchAndDisplayData();
-  initCarousel();
+
+  $(window).load(function() {
+    initCarousel();
+  });
 };
 
 $(document).on('ready', initLiveElectionApp);
