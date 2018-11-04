@@ -52,47 +52,31 @@ function fetchAndDisplayData() {
       // Row 3: Candidate 2
       var row3 = data[startIndex + 2].split(",");
 
-      // Row 4: Candidate 3 **OR** Blank
+      // Row 4: Subhed
       var row4 = data[startIndex + 3].split(",");
-      var row4Text = '';
-      if (row4[0] !== '_blank') {
-        row4Text = `${row4[0]}: ${row4[1]}`;
-      }
-
-      // Row 5: Subhed
-      var row5 = data[startIndex + 4].split(",");
 
       // Put it all together!
-      var raceHtml = ``;
-      raceHtml += `
+      var raceHtml = `
         <li class="carousel-widget-slide" style="width: 195px; margin-right: 20px; float: left; display: block;">
           <div id="carouseltextcarousel-2" class="carouseltext" style="max-height:50px;min-height:20px; padding-top:10px;">
             <div class="widgetheadline" style="text-align:center;">
               <p style="font-size:14px; line-height:17px;" class="homeheadline">
               <b>${header}</b>
               <br />
-              <b>(${row5[1]})</b>
+              <b>(${row4[1]})</b>
               </p>
             </div>
           </div>
-          <div style="height:170px;width:100%;overflow:hidden;position:relative;">
-          <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row2[2]}; color: ${row2[3]}">
+          <div style="height:130px;width:100%;overflow:hidden;position:relative;">
+            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row2[2]}; color: ${row2[3]}">
               ${row2[0]}: ${row2[1]}
             </span>
             <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row3[2]}; color: ${row3[3]}">
               ${row3[0]}: ${row3[1]}
             </span>
+          </div>
+        </li>
       `;
-
-      if (row4[0] !== '_blank') {
-        raceHtml += `
-          <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row4[2]}; color: ${row4[3]}">
-            ${row4Text}
-          </span>
-          `;
-      }
-
-      raceHtml += `</div></li>`;
 
       $container.append(raceHtml);
     }
