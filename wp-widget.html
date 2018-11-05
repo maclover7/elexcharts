@@ -1,7 +1,7 @@
 <div class="widgetwrap carousel-widget sno-animate  sno-carousel-2 come-in" style="visibility: visible;">
   <div style="margin: 0px 0px 0px 0px;padding: 10px 9px 0px 9px;overflow: hidden;background-color: #ededed;border-left: 0px solid #ffffff;border-right: 0px solid #ffffff;border-top: 0px solid #ffffff;">
     <div class="widget4 widgettitle" style="color: #6d6d6d!important;background: #ededed!important;font-size:16px!important;line-height: 28px!important;padding-top:2px !important;text-align:center;">
-      <p style="color: #6d6d6d !important;">Live Election Updates <span id="live-election-updated-at"></span></p>
+      <p style="color: #6d6d6d !important; text-transform: none;">Live Election Updates (as of <span id="live-election-updated-at"></span>)</p>
     </div>
   </div>
   <div class="widgetbody4" style="background-color: #ededed!important;border-right: 0px solid #ffffff !important;border-left: 0px solid #ffffff !important;border-bottom: 0px solid #ffffff !important; padding-top: 0px;">
@@ -27,7 +27,7 @@
 function fetchAndDisplayData() {
   var $container = $('ul#live-election-slides');
 
-  var dataUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOSBIcrqmJ5OLuTJksiTt8Y1PXbaxx_SU0nKZcZXyCEDmgdxsF5XEcv6JPxzgpVjiLDlYci2tUtHGD/pub?output=csv';
+  var dataUrl = 'https://docs.google.com/spreadsheets/d/1LKfcQYRfAdYm3O7zMuypLPaHib17GM-qfZjHwPGCAC4/export?&format=csv';
   $.get(dataUrl, (res, status, _) => {
     if (status !== 'success')
       return;
@@ -44,7 +44,8 @@ function fetchAndDisplayData() {
       var startIndex = rowHeaderIndices[i];
 
       // Row 1: Header
-      var header = data[startIndex].split(",")[1];
+      var headerData = data[startIndex].split(",");
+      var header = headerData[1];
 
       // Row 2: Candidate 1
       var row2 = data[startIndex + 1].split(",");
@@ -55,6 +56,12 @@ function fetchAndDisplayData() {
       // Row 4: Subhed
       var row4 = data[startIndex + 3].split(",");
 
+      // Polls closed text
+      var pollsClosedText = '';
+      if (headerData[2] !== '') {
+        pollsClosedText += `<br/ ><b>(${headerData[2]})</b>`;
+      }
+
       // Put it all together!
       var raceHtml = `
         <li class="carousel-widget-slide" style="width: 195px; margin-right: 20px; float: left; display: block;">
@@ -64,6 +71,7 @@ function fetchAndDisplayData() {
               <b>${header}</b>
               <br />
               <b>(${row4[1]})</b>
+              ${pollsClosedText}
               </p>
             </div>
           </div>
