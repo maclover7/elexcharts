@@ -99,6 +99,8 @@ function fetchAndDisplayData() {
 
         $container.append(raceHtml);
       });
+
+    initCarousel();
   });
 };
 
@@ -121,13 +123,8 @@ function initCarousel() {
   $('.flexslider').animate({ 'opacity': 1 }, { 'duration': 'slow' });
 };
 
-function initLiveElectionApp() {
-  fetchAndDisplayData();
-  initCarousel();
-};
-
-$(document).on('ready', initLiveElectionApp);
-setInterval(initLiveElectionApp, 30000);
+$(document).on('ready', fetchAndDisplayData);
+setInterval(fetchAndDisplayData, 30000);
 		</script>
     <div class="widget-expander" style="padding-bottom:0px"></div>
     <div class="clear"></div>
