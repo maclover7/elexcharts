@@ -44,7 +44,6 @@ function fetchAndDisplayData() {
       .forEach((startIndex) => {
         // Row 1: Header
         var headerData = data[startIndex].split(",");
-        var header = headerData[1];
 
         // Row 2: Candidate 1
         var row2 = data[startIndex + 1].split(",");
@@ -52,8 +51,13 @@ function fetchAndDisplayData() {
         // Row 3: Candidate 2
         var row3 = data[startIndex + 2].split(",");
 
-        // Row 4: Subhed
+        // Row 4: "Too close to call" or Subhed
         var row4 = data[startIndex + 3].split(",");
+
+        var row5 = [];
+        if (data[startIndex + 4] && !data[startIndex + 4].split(",")[0].startsWith('H')) {
+          var row5 = data[startIndex + 4].split(",");
+        }
 
         // Polls closed text
         var pollsClosedText = '';
@@ -62,28 +66,38 @@ function fetchAndDisplayData() {
         }
 
         // Put it all together!
-        $container.append(`
+        var raceHtml = `
           <li class="carousel-widget-slide" style="width: 195px; margin-right: 20px; float: left; display: block;">
             <div id="carouseltextcarousel-2" class="carouseltext" style="max-height:50px;min-height:20px; padding-top:10px;">
               <div class="widgetheadline" style="text-align:center;">
                 <p style="font-size:14px; line-height:17px;" class="homeheadline">
-                <b>${header}</b>
+                <b>${headerData[1]}</b>
                 <br />
-                <b>(${row4[1]})</b>
+                <b>(${(row5.length > 0) ? row5[1] : row4[1]})</b>
                 ${pollsClosedText}
                 </p>
               </div>
             </div>
-            <div style="height:130px;width:100%;overflow:hidden;position:relative;">
+            <div style="height:170px;width:100%;overflow:hidden;position:relative;">
               <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row2[2]}; color: ${row2[3]}">
                 ${row2[0]}: ${row2[1]}
               </span>
               <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row3[2]}; color: ${row3[3]}">
                 ${row3[0]}: ${row3[1]}
               </span>
-            </div>
-          </li>
-        `);
+        `;
+
+        if (row5.length > 0) {
+          raceHtml += `
+            <span style="width:90%; text-align:center !important; font-size:14px; line-height:17px; border:1px solid rgb(175, 175, 175); padding:10px 10px; padding-left: 10px; text-align:left; display:inline-block; margin-top:7px; margin-bottom:10px; background-color: ${row4[2]}; color: ${row4[3]}">
+              ${row4[0]}: ${row4[1]}
+            </span>
+          `;
+        }
+
+        raceHtml += `</div></li>`;
+
+        $container.append(raceHtml);
       });
   });
 };
